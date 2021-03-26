@@ -5,49 +5,67 @@ void main() => runApp(MenuApp());
 class MenuApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: MenuWidget());
+    return MaterialApp(
+      home: MenuWidget(),
+      theme: ThemeData(
+        primaryColor: Colors.purple[600],
+        accentColor: Colors.amberAccent[700],
+        buttonTheme: ButtonThemeData(
+          buttonColor: Colors.amberAccent[700],
+          textTheme: ButtonTextTheme.primary,
+        ),
+      ),
+    );
   }
 }
 
-class AddProductWidget extends StatelessWidget {
+class AddProductWidget extends StatefulWidget {
+  @override
+  AddProductWidgetState createState() => AddProductWidgetState();
+}
+
+class AddProductWidgetState extends State<AddProductWidget> {
   final TextEditingController _orderNameController = TextEditingController();
-  final TextEditingController _orderDescriptionController = TextEditingController();
+  final TextEditingController _orderDescriptionController =
+      TextEditingController();
   final TextEditingController _orderValueController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text('Incluir Pedido')),
-        body: Column(
-          children: [
-            TextEditor(
-              orderName: "Nome do produto",
-              orderHint: "Lanche",
-              controller: _orderNameController,
-              icon: Icons.whatshot,
-            ),
-            TextEditor(
-              orderName: "Descrição do Produto",
-              orderHint: "Pão, hamburguer...",
-              controller: _orderDescriptionController,
-              icon: Icons.article,
-            ),
-            TextEditor(
-              orderName: "Preço",
-              orderHint: "R\$00.00",
-              controller: _orderValueController,
-              icon: Icons.monetization_on,
-              keyboardType: TextInputType.number,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
-                  onPressed: () {
-                    createMenuItem(context);
-                  },
-                  child: Text('Confirmar')),
-            ),
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextEditor(
+                orderName: "Nome do produto",
+                orderHint: "Lanche",
+                controller: _orderNameController,
+                icon: Icons.whatshot,
+              ),
+              TextEditor(
+                orderName: "Descrição do Produto",
+                orderHint: "Pão, hamburguer...",
+                controller: _orderDescriptionController,
+                icon: Icons.article,
+              ),
+              TextEditor(
+                orderName: "Preço",
+                orderHint: "R\$00.00",
+                controller: _orderValueController,
+                icon: Icons.monetization_on,
+                keyboardType: TextInputType.number,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ElevatedButton(
+                    onPressed: () {
+                      createMenuItem(context);
+                    },
+                    child: Text('Confirmar')),
+              ),
+            ],
+          ),
         ));
   }
 
@@ -107,7 +125,6 @@ class MenuWidget extends StatefulWidget {
 }
 
 class MenuWidgetState extends State<MenuWidget> {
-
   @override
   Widget build(BuildContext context) {
     debugPrint('LISTA DE ITENS NO MENU ${widget._menuList}');
@@ -131,7 +148,9 @@ class MenuWidgetState extends State<MenuWidget> {
           future.then((createMenuItem) {
             debugPrint('Retornando item do Menu');
             debugPrint('$createMenuItem');
-            setState(() => widget._menuList.add(createMenuItem));
+            if (createMenuItem != null) {
+              setState(() => widget._menuList.add(createMenuItem));
+            }
             debugPrint('LISTA DE ITENS ${widget._menuList}');
           });
         },

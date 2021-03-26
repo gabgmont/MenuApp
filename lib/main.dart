@@ -131,7 +131,7 @@ class MenuWidgetState extends State<MenuWidget> {
           future.then((createMenuItem) {
             debugPrint('Retornando item do Menu');
             debugPrint('$createMenuItem');
-            widget._menuList.add(createMenuItem);
+            setState(() => widget._menuList.add(createMenuItem));
             debugPrint('LISTA DE ITENS ${widget._menuList}');
           });
         },

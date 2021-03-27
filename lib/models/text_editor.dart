@@ -19,6 +19,7 @@ class TextEditor extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
       child: TextField(
+        inputFormatters: [],
         keyboardType: keyboardType,
         controller: controller,
         style: TextStyle(fontSize: 16.0),

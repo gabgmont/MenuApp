@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:test_app/models/text_editor.dart';
 
 import 'menu.dart';
@@ -12,7 +13,7 @@ const _productDescription = "Descrição do Produto";
 const _productDescriptionHint = "Pão, hamburguer...";
 
 const _productValue = "Preço";
-const _productValueHint = "R\$00.00";
+const _productValueHint = "R\$00,00";
 
 const _confirmButton = 'Confirmar';
 
@@ -25,7 +26,11 @@ class AddProductWidgetState extends State<AddProductWidget> {
   final TextEditingController _orderNameController = TextEditingController();
   final TextEditingController _orderDescriptionController =
       TextEditingController();
-  final TextEditingController _orderValueController = TextEditingController();
+  final TextEditingController _orderValueController = MoneyMaskedTextController(
+    leftSymbol: 'R\$',
+    decimalSeparator: ',',
+    thousandSeparator: '.',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +73,7 @@ class AddProductWidgetState extends State<AddProductWidget> {
   void createMenuItem(BuildContext context) {
     final String menuItemName = _orderNameController.text;
     final String menuItemDescription = _orderDescriptionController.text;
-    final double menuItemValue = double.tryParse(_orderValueController.text);
+    final double menuItemValue = double.tryParse(currencyFormat(_orderValueController.text));
 
     if (menuItemName != "" &&
         menuItemDescription != "" &&
@@ -78,4 +83,7 @@ class AddProductWidgetState extends State<AddProductWidget> {
       Navigator.pop(context, menuItem);
     }
   }
+
+  String currencyFormat(String orderValue) =>
+      orderValue.substring(2).replaceAll('.', '').replaceAll(',', '.');
 }
